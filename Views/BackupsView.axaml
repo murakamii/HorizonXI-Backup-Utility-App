@@ -1,0 +1,39 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:HorizonXIBackupApp.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
+             x:Class="HorizonXIBackupApp.Views.BackupsView"
+             x:DataType="vm:BackupsViewModel">
+
+    <Grid RowDefinitions="Auto,*,Auto,Auto" Margin="12">
+        <TextBlock Grid.Row="0" Text="Backup snapshots" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8"/>
+
+        <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding Backups}"
+                  SelectedItem="{Binding SelectedBackup}"
+                  AutoGenerateColumns="False"
+                  CanUserResizeColumns="True"
+                  CanUserSortColumns="True"
+                  IsReadOnly="True"
+                  SelectionMode="Single"
+                  GridLinesVisibility="Horizontal">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
+                <DataGridTextColumn Header="Size" Binding="{Binding SizeDisplay}" Width="100"/>
+                <DataGridTextColumn Header="Modified" Binding="{Binding ModifiedDisplay}" Width="160"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="8" Margin="0,12,0,0">
+            <Button Content="Restore selected" Command="{Binding RestoreCommand}"/>
+            <Button Content="Delete selected" Command="{Binding DeleteSelectedCommand}"/>
+            <Button Content="Open backup folder" Command="{Binding OpenFolderCommand}"/>
+            <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsBusy}" Width="120" Height="4" VerticalAlignment="Center" Margin="12,0,0,0"/>
+            <TextBlock Text="{Binding BusyMessage}" VerticalAlignment="Center" Foreground="Gray" Margin="6,0,0,0"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="3" Text="{Binding StatusMessage}" Foreground="Gray" Margin="0,8,0,0" TextWrapping="Wrap"/>
+    </Grid>
+</UserControl>

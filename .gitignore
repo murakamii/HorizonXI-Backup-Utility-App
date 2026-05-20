@@ -1,0 +1,20 @@
+## .NET build output
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+## Rider / VS Code
+.idea/
+.vscode/
+
+## Publish output
+publish/
+*.pdb
+
+## OS / editor
+Thumbs.db
+desktop.ini
+.DS_Store
+*.swp

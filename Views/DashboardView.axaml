@@ -1,0 +1,62 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:HorizonXIBackupApp.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
+             x:Class="HorizonXIBackupApp.Views.DashboardView"
+             x:DataType="vm:DashboardViewModel">
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="20">
+        <StackPanel Grid.Row="0" Spacing="6">
+            <TextBlock Text="HorizonXI Backup Utility" FontSize="22" FontWeight="SemiBold"/>
+            <TextBlock TextWrapping="Wrap" Foreground="Gray"
+                       Text="Backs up your HorizonXI configs and loaded addons, and checks GitHub for new commits."/>
+        </StackPanel>
+
+        <Border Grid.Row="1" Margin="0,16,0,16" Padding="14" CornerRadius="6"
+                BorderBrush="#3050C0FF" BorderThickness="1" Background="#1050C0FF">
+            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" >
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Install:" FontWeight="SemiBold" Margin="0,0,12,4"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding InstallPathDisplay}" Margin="0,0,0,4"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Status:" FontWeight="SemiBold" Margin="0,0,12,4"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Margin="0,0,0,4">
+                    <TextBlock.Text>
+                        <Binding Path="IsInstallValid" Converter="{x:Static vm:ValidConverters.YesNo}"/>
+                    </TextBlock.Text>
+                </TextBlock>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Last backup:" FontWeight="SemiBold" Margin="0,0,12,0"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding LastBackupDisplay}"/>
+            </Grid>
+        </Border>
+
+        <StackPanel Grid.Row="2" Spacing="12" HorizontalAlignment="Stretch">
+            <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                    Padding="12" FontSize="16"
+                    Command="{Binding BackupNowCommand}">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBlock Text="Backup Now" FontWeight="SemiBold"/>
+                </StackPanel>
+            </Button>
+
+            <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                    Padding="12" FontSize="16"
+                    Command="{Binding CheckUpdatesCommand}">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBlock Text="Check for Updates" FontWeight="SemiBold"/>
+                </StackPanel>
+            </Button>
+
+            <TextBlock Text="{Binding BusyMessage}" Foreground="Gray" IsVisible="{Binding IsBusy}"/>
+            <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsBusy}" Height="4"/>
+
+            <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap" FontWeight="SemiBold" Margin="0,12,0,0"/>
+            <TextBlock Text="{Binding UpdateSummaryDisplay}" Foreground="Gray"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="3" Margin="0,16,0,0" Foreground="Gray" FontSize="11"
+                   Text="Tip: open the Settings tab to change install path or backup folder."/>
+    </Grid>
+</UserControl>
