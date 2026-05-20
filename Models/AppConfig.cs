@@ -8,6 +8,9 @@ public sealed class AppConfig
     [JsonPropertyName("install_root")]
     public string InstallRoot { get; set; } = @"C:\HorizonXI\Game";
 
+    [JsonPropertyName("theme")]
+    public string Theme { get; set; } = "Dark";
+
     [JsonPropertyName("ignore_addons")]
     public List<string> IgnoreAddons { get; set; } = new() { "dynamic_entity_renamer" };
 

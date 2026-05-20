@@ -7,12 +7,22 @@ public sealed class ConfigService
     public AppConfig Load()
     {
         AppPaths.EnsureAppDataExists();
+        var configExisted = System.IO.File.Exists(AppPaths.ConfigPath);
         var cfg = JsonStore.LoadOrDefault(AppPaths.ConfigPath, new AppConfig());
         if (cfg is null) cfg = new AppConfig();
+
         if (string.IsNullOrWhiteSpace(cfg.Backup.Destination))
         {
             cfg.Backup.Destination = AppPaths.DefaultBackupDestination;
         }
+
+        // On first run, try to find the install path automatically.
+        if (!configExisted)
+        {
+            var detected = InstallPathDetector.Detect();
+            if (!string.IsNullOrEmpty(detected)) cfg.InstallRoot = detected;
+        }
+
         return cfg;
     }
 

@@ -95,6 +95,15 @@ public partial class DashboardViewModel : ViewModelBase
                 : "All loaded addons are up to date.";
 
             _root.Addons.PopulateFromSummary(summary);
+
+            if (summary.NewCount > 0 && _root.Config.Updates.NotifyOnUpdate)
+            {
+                var names = summary.Results
+                    .Where(r => r.Status == Models.UpdateStatus.New)
+                    .Select(r => r.Name)
+                    .ToList();
+                _root.Notifier.ShowUpdateSummary(names);
+            }
         }
         catch (Exception ex)
         {

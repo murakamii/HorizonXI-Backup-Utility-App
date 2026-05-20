@@ -5,17 +5,17 @@ using HorizonXIBackupApp.Services;
 
 namespace HorizonXIBackupApp.ViewModels;
 
-public sealed class AddonRowViewModel
+public partial class AddonRowViewModel : ObservableObject
 {
-    public string Name { get; set; } = "";
-    public string Installed { get; set; } = "";
-    public string Ignored { get; set; } = "";
-    public string Source { get; set; } = "";
-    public string Status { get; set; } = "";
-    public string Sha { get; set; } = "";
-    public string Date { get; set; } = "";
-    public string Url { get; set; } = "";
-    public string CommitUrl { get; set; } = "";
+    [ObservableProperty] private string _name = "";
+    [ObservableProperty] private string _installed = "";
+    [ObservableProperty] private string _ignored = "";
+    [ObservableProperty] private string _source = "";
+    [ObservableProperty] private string _status = "";
+    [ObservableProperty] private string _sha = "";
+    [ObservableProperty] private string _date = "";
+    [ObservableProperty] private string _url = "";
+    [ObservableProperty] private string _commitUrl = "";
 }
 
 public partial class AddonsViewModel : ViewModelBase

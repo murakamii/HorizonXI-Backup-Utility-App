@@ -8,12 +8,15 @@
              x:DataType="vm:SettingsViewModel">
 
     <ScrollViewer>
-        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" Margin="16">
+        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" Margin="16">
 
             <TextBlock Grid.Row="0" Text="Settings" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,12"/>
 
             <TextBlock Grid.Row="1" Text="HorizonXI install root" FontWeight="SemiBold"/>
-            <TextBox Grid.Row="2" Text="{Binding InstallRoot}" Watermark="C:\HorizonXI\Game" Margin="0,4,0,12"/>
+            <Grid Grid.Row="2" ColumnDefinitions="*,Auto" Margin="0,4,0,12">
+                <TextBox Grid.Column="0" Text="{Binding InstallRoot}" Watermark="C:\HorizonXI\Game"/>
+                <Button Grid.Column="1" Content="Auto-detect" Command="{Binding DetectInstallPathCommand}" Margin="6,0,0,0"/>
+            </Grid>
 
             <TextBlock Grid.Row="3" Text="Backup destination" FontWeight="SemiBold"/>
             <TextBox Grid.Row="4" Text="{Binding BackupDestination}" Margin="0,4,0,12"/>
@@ -52,15 +55,23 @@
                 </StackPanel>
             </Expander>
 
-            <Expander Grid.Row="10" Header="Advanced" IsExpanded="False" Margin="0,0,0,12">
-                <StackPanel Spacing="6">
-                    <TextBlock Text="GitHub personal access token (optional, raises rate limit from 60/h to 5000/h):" Foreground="Gray"/>
-                    <TextBox Text="{Binding GithubToken}" Watermark="ghp_..." PasswordChar="*"/>
-                    <CheckBox Content="Show Windows toast when updates are found" IsChecked="{Binding NotifyOnUpdate}" Margin="0,8,0,0"/>
+            <Expander Grid.Row="10" Header="Appearance and notifications" IsExpanded="True" Margin="0,0,0,12">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Theme" FontWeight="SemiBold"/>
+                    <ComboBox ItemsSource="{Binding ThemeOptions}" SelectedItem="{Binding Theme}" MinWidth="160"/>
+                    <CheckBox Content="Show Windows toast when updates are found" IsChecked="{Binding NotifyOnUpdate}"/>
+                    <Button Content="Send test notification" Command="{Binding TestNotificationCommand}" HorizontalAlignment="Left"/>
                 </StackPanel>
             </Expander>
 
-            <StackPanel Grid.Row="11" Orientation="Horizontal" Spacing="12" Margin="0,8,0,0">
+            <Expander Grid.Row="11" Header="Advanced" IsExpanded="False" Margin="0,0,0,12">
+                <StackPanel Spacing="6">
+                    <TextBlock Text="GitHub personal access token (optional, raises rate limit from 60/h to 5000/h):" Foreground="Gray"/>
+                    <TextBox Text="{Binding GithubToken}" Watermark="ghp_..." PasswordChar="*"/>
+                </StackPanel>
+            </Expander>
+
+            <StackPanel Grid.Row="12" Orientation="Horizontal" Spacing="12" Margin="0,8,0,0">
                 <Button Content="Save" Command="{Binding SaveCommand}" Padding="20,6"/>
                 <TextBlock Text="{Binding StatusMessage}" VerticalAlignment="Center" Foreground="Gray"/>
             </StackPanel>

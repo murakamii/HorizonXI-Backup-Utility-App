@@ -12,6 +12,7 @@ public partial class MainWindowViewModel : ViewModelBase
     public BackupService BackupService { get; }
     public RestoreService RestoreService { get; }
     public UpdateCheckerService UpdateChecker { get; }
+    public NotificationService Notifier { get; }
 
     [ObservableProperty] private AppConfig _config;
 
@@ -30,6 +31,7 @@ public partial class MainWindowViewModel : ViewModelBase
         RestoreService = new RestoreService(BackupService);
         var github = new GitHubClient();
         UpdateChecker = new UpdateCheckerService(ConfigService, RegistryService, github);
+        Notifier = new NotificationService();
 
         _config = ConfigService.Load();
         // Persist with defaults filled in (first-run case)

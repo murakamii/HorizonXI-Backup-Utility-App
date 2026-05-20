@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using HorizonXIBackupApp.Services;
 
 namespace HorizonXIBackupApp.ViewModels;
 
@@ -22,10 +23,13 @@ public partial class SettingsViewModel : ViewModelBase
     [ObservableProperty] private string _ignoreAddonsText = "";
     [ObservableProperty] private string _githubToken = "";
     [ObservableProperty] private bool _notifyOnUpdate;
+    [ObservableProperty] private string _theme = ThemeService.Dark;
     [ObservableProperty] private string _statusMessage = "";
 
     [ObservableProperty] private string _newCustomUrlName = "";
     [ObservableProperty] private string _newCustomUrlUrl = "";
+
+    public string[] ThemeOptions => ThemeService.Options;
 
     public ObservableCollection<CustomUrlRow> CustomUrls { get; } = new();
 
@@ -44,6 +48,7 @@ public partial class SettingsViewModel : ViewModelBase
         IgnoreAddonsText = string.Join(", ", _root.Config.IgnoreAddons);
         GithubToken = _root.Config.Updates.GithubToken;
         NotifyOnUpdate = _root.Config.Updates.NotifyOnUpdate;
+        Theme = string.IsNullOrEmpty(_root.Config.Theme) ? ThemeService.Dark : _root.Config.Theme;
 
         CustomUrls.Clear();
         foreach (var kv in _root.Config.Updates.CustomUrls)
@@ -64,6 +69,8 @@ public partial class SettingsViewModel : ViewModelBase
         }
         _root.Config.Updates.GithubToken = GithubToken.Trim();
         _root.Config.Updates.NotifyOnUpdate = NotifyOnUpdate;
+        _root.Config.Theme = Theme;
+        ThemeService.Apply(Theme);
 
         _root.Config.Updates.CustomUrls.Clear();
         foreach (var row in CustomUrls)
@@ -101,5 +108,25 @@ public partial class SettingsViewModel : ViewModelBase
         if (row is null) return;
         CustomUrls.Remove(row);
         StatusMessage = "Removed. Click Save to persist.";
+    }
+
+    [RelayCommand]
+    public void TestNotification()
+    {
+        _root.Notifier.ShowTest();
+        StatusMessage = "Test toast sent. Check your notification center if you missed it.";
+    }
+
+    [RelayCommand]
+    public void DetectInstallPath()
+    {
+        var detected = InstallPathDetector.Detect();
+        if (string.IsNullOrEmpty(detected))
+        {
+            StatusMessage = "Could not auto-detect a HorizonXI install in the usual locations.";
+            return;
+        }
+        InstallRoot = detected;
+        StatusMessage = $"Detected: {detected}. Click Save to apply.";
     }
 }

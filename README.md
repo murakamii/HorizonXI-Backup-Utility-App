@@ -8,10 +8,18 @@ This is the friendly GUI version of the [PowerShell CLI tool](https://github.com
 
 1. Grab `HorizonXIBackupApp.exe` from the latest [release](../../releases) (or build it yourself — see below).
 2. Double-click it. No install needed.
-3. First-run: open the **Settings** tab and confirm your HorizonXI install path. The default is `C:\HorizonXI\Game`. Save.
+3. On first launch, the app scans common locations for your HorizonXI install (`C:\HorizonXI\Game`, etc.) and uses it automatically. If you have it somewhere else, set the path in **Settings**.
 4. Use the **Dashboard** tab: click **Backup Now** or **Check for Updates**.
 
 The app stores its settings and per-machine state in `%APPDATA%\HorizonXIBackupApp\`. Backups go to `Documents\HorizonXI Backups\` by default — you can change that in Settings.
+
+## Appearance
+
+The app starts in **Dark** mode by default. Change to **Light** or **System** (follows your Windows theme) under Settings -> Appearance and notifications.
+
+## Notifications
+
+When `Check for Updates` finds new commits, the app fires a Windows toast notification listing the affected addons. Disable it in Settings if you'd rather rely on the in-app display. Click "Send test notification" in Settings to confirm it works on your system.
 
 ## What gets backed up
 
